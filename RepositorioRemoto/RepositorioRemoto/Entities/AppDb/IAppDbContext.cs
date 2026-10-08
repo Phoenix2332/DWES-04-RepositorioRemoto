@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using RepositorioRemoto.Models;
 
@@ -12,4 +13,6 @@ public interface IAppDbContext {
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     void EnsureCreated();
+
+    EntityEntry<User> Entry(User entity);
 }

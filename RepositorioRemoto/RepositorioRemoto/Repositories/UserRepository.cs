@@ -64,7 +64,6 @@ public class UserRepository : IUserRepository {
         _logger.Debug("[REPO-UPDATE] Actualizando usuario con ID {Id}", id);
         try {
             var existing = await _context.Users
-                .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (existing is null) {
@@ -72,6 +71,10 @@ public class UserRepository : IUserRepository {
                 return Result.Failure<User, DomainErrors>(UsersError.NotFoundError(id));
             }
 
+            // Detach de la instancia rastreada: quien llama (p. ej. UserService tras
+            // ComprobarExistenciaAsync) puede tenerla ya en el mismo contexto y
+            // Update(otraInstancia) lanzaría "already being tracked".
+            _context.Entry(existing).State = EntityState.Detached;
             _context.Users.Update(user);
 
             await _context.SaveChangesAsync();

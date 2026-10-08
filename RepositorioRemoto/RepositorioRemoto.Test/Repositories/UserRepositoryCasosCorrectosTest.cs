@@ -60,6 +60,22 @@ public class UserRepositoryCasosCorrectosTest : UserRepositoryTestBase {
     }
 
     [Test]
+    public async Task UpdateAsync_EntidadSeparada_ActualizaCorrectamente() {
+        // Arrange: instancia detached con datos modificados (caso real DTO).
+        await AddUserAsync(CreateUser(1));
+        Context.ChangeTracker.Clear();
+        var detachedUser = CreateUser(1) with { Name = "Updated" };
+
+        // Act
+        var result = await Repository.UpdateAsync(1, detachedUser);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Name.Should().Be("Updated");
+        (await Context.Users.FindAsync(1))!.Name.Should().Be("Updated");
+    }
+
+    [Test]
     public async Task DeleteAsync_UsuarioExistente_EliminaYRetornaUsuario() {
         // Arrange
         var user = CreateUser(1);

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RepositorioRemoto.Models;
 
 namespace RepositorioRemoto.Entities.AppDb;
@@ -9,6 +10,8 @@ public class AppDbContextSqlite(DbContextOptions<AppDbContextSqlite> options) : 
     public void EnsureCreated() {
         Database.EnsureCreated();
     }
+
+    public EntityEntry<User> Entry(User entity) => base.Entry(entity);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<User>(entity => {

@@ -170,6 +170,12 @@ public class UserService(
             _logger.Debug(ex, "[SERVICE-UPDATE] Usuario con ID {Id} no encontrado en la API", id);
             return Result.Failure<User, DomainErrors>(UsersError.NotFoundError(id));
         }
+        catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.InternalServerError) {
+            // JSONPlaceholder devuelve 500 (no 404) al hacer PUT sobre un ID
+            // inexistente en remoto (p. ej. el 11 falsificado por su POST).
+            _logger.Debug(ex, "[SERVICE-UPDATE] Usuario con ID {Id} no encontrado en la API (500)", id);
+            return Result.Failure<User, DomainErrors>(UsersError.NotFoundError(id));
+        }
         catch (Exception ex) {
             _logger.Error(ex, "[SERVICE-UPDATE] Error al actualizar usuario con ID {Id}", id);
             return Result.Failure<User, DomainErrors>(ServiceError.UpdateError(id));

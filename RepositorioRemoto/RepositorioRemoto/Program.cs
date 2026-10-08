@@ -376,5 +376,5 @@ static async Task ExportAsync(IUserService userService) {
     }
 
     WriteLine("Usuarios exportados correctamente.");
-    WriteLine($"Fichero: {result.Value}");
+    WriteLine($"Fichero: {AppConfig.UsersJsonPath}");
 }

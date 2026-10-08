@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using RepositorioRemoto.Api;
 using RepositorioRemoto.Cache.Common;
+using RepositorioRemoto.Config;
 using RepositorioRemoto.Errors;
 using RepositorioRemoto.Models;
 using RepositorioRemoto.Repositories;
@@ -41,7 +42,7 @@ public class SynchroServiceCasosCorrectosTest {
     {
         // Arrange: token cancelado antes de arrancar; el PeriodicTimer
         // lanza OperationCanceledException sin ejecutar ninguna sincronización.
-        RepositorioRemoto.Config.AppConfig.Configure("dev");
+        AppConfig.Configure("dev");
         var cache = new Mock<IUserCache>();
         var repository = new Mock<IUserRepository>();
         var api = new Mock<IJsonPlaceholderApi>();

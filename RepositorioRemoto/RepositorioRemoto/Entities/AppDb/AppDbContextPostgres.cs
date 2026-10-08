@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepositorioRemoto.Models;
-
 namespace RepositorioRemoto.Entities.AppDb;
 
 public class AppDbContextPostgre(DbContextOptions<AppDbContextPostgre> options) : DbContext(options), IAppDbContext {
@@ -32,6 +31,8 @@ public class AppDbContextPostgre(DbContextOptions<AppDbContextPostgre> options) 
     public void EnsureCreated() {
         Database.EnsureCreated();
     }
+
+    public EntityEntry<User> Entry(User entity) => base.Entry(entity);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<User>(e => {

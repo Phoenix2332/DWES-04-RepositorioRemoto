@@ -43,20 +43,6 @@ public class UserRepositoryCasosIncorrectosTest : UserRepositoryTestBase {
     }
 
     [Test]
-    public async Task UpdateAsync_EntidadSeparada_DevuelveErrorDeActualizacion() {
-        // Arrange
-        await AddUserAsync(CreateUser(1));
-        var detachedUser = CreateUser(1) with { Name = "Updated" };
-
-        // Act
-        var result = await Repository.UpdateAsync(1, detachedUser);
-
-        // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().BeOfType<RepositoryErrors.UpdatedError>();
-    }
-
-    [Test]
     public async Task CreateAsync_ContextoDisposed_RetornaErrorDeCreacion() {
         // Arrange
         Context.Dispose();
